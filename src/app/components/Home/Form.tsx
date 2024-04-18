@@ -1,8 +1,11 @@
 "use client";
 
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useContext, useRef, useState } from "react";
 import CustomButton from "../CustomButton";
 import CustomSelect from "../CustomSelect";
+import { useRouter } from "next/navigation";
+import { AppContext } from "@/app/context/appContext";
+import { AppContextType } from "@/app/@types/types";
 
 const Form = ({
   empleados,
@@ -11,10 +14,18 @@ const Form = ({
   empleados: { label: string; value: string }[];
   meses: { label: string; value: string }[];
 }) => {
+  const router = useRouter();
+  const { updateEmpleado, updateMes } = useContext(
+    AppContext
+  ) as AppContextType;
+
   const [formData, setFormData] = useState({ empleado: "", mes: "" });
 
   const handleOnClick = () => {
-    console.log("FORM DATA: ", formData);
+    updateEmpleado(formData.empleado);
+    updateMes(formData.mes);
+
+    return router.push(`/${formData.empleado}/${formData.mes}`);
   };
 
   const selectOnChange = (e: ChangeEvent<HTMLSelectElement>) => {
