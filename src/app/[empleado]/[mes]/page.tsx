@@ -1,8 +1,5 @@
 import Form from "@/app/components/Empleado/Form";
-import { useRecoverSelectedData } from "../../hooks/useRecoverSelectedData";
-import { getFileData } from "../../utils/data";
-import googleClassInstance from "@/app/utils/data2";
-
+import googleClassInstance from "@/app/utils/data";
 import CustomBackButton from "@/app/components/CustomBackButton";
 
 export default async function Page({
