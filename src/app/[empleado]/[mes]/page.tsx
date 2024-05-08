@@ -3,6 +3,8 @@ import { useRecoverSelectedData } from "../../hooks/useRecoverSelectedData";
 import { getFileData } from "../../utils/data";
 import googleClassInstance from "@/app/utils/data2";
 
+import CustomBackButton from "@/app/components/CustomBackButton";
+
 export default async function Page({
   params,
 }: {
@@ -15,8 +17,6 @@ export default async function Page({
 
   if (!response) return;
 
-  console.log(response);
-
   return (
     <div className="flex flex-col p-5">
       <div>
@@ -27,6 +27,8 @@ export default async function Page({
         <h1 className="mb-2 text-4xl">Segunda Quincena</h1>
         <Form quincena={response.segundaQuincena} />
       </div>
+      <div></div>
+      <CustomBackButton isDisabled={false} label="Volver" />
     </div>
   );
 }

@@ -122,27 +122,38 @@ class GoogleSheetClass {
   ) {
     const primerQuincena = [];
     const segundaQuincena = [];
+
+    const empleadoRows = this.fromGoogleSpreadSheetToRow(empleadoInfo);
+
     for (const row of supervisorInfo) {
       const object = row.toObject() as RowFileType;
-      const [dia] = object.FECHA.split("/");
+
+      const dateEmpleadoRow = empleadoRows.find(
+        (empleadoRow) => empleadoRow.FECHA === object.FECHA
+      );
+
+      const dia = object.Timestamp.split(" ")[0].split("-")[2];
 
       if (object["NOMBRE TRABAJADOR"].toString() !== empleadoSelected) continue;
 
       const data = {
         fecha: object.FECHA,
         empleado: object["NOMBRE TRABAJADOR"],
-        horaEntradaEmpleador: "aaa",
+        horaEntradaEmpleador: dateEmpleadoRow?.["HORA ENTRADA"] || "-",
         horaEntradaSupervisor: object["HORA ENTRADA"],
-        horaSalidaEmpleador: "bbb",
+        horaSalidaEmpleador: dateEmpleadoRow?.["HORA SALIDA"] || "-",
         horaSalidaSupervisor: object["HORA SALIDA"],
-        tiempoAlmuerzoEmpleador: "ccc",
+        tiempoAlmuerzoEmpleador: dateEmpleadoRow?.["TIEMPO DE ALMUERZO"] || "-",
         tiempoAlmuerzoSupervisor: object["TIEMPO DE ALMUERZO"],
-        recesoManianaEmpleador: "ddd",
+        recesoManianaEmpleador:
+          dateEmpleadoRow?.["TIEMPO RECESO EN MAÑANA"] || "-",
         recesoManianaSupervisor: object["TIEMPO RECESO EN MAÑANA"],
-        recesoTardeEmpleador: "eee",
+        recesoTardeEmpleador:
+          dateEmpleadoRow?.["TIEMPO RECESO EN TARDE"] || "-",
         recesoTardeSupervisor: object["TIEMPO RECESO EN TARDE"],
       };
-      if (+dia >= 1 || +dia <= 15) {
+
+      if (+dia >= 1 && +dia <= 15) {
         primerQuincena.push(data);
       } else {
         segundaQuincena.push(data);
@@ -153,6 +164,14 @@ class GoogleSheetClass {
       primerQuincena,
       segundaQuincena,
     };
+  }
+
+  private fromGoogleSpreadSheetToRow(
+    googleSpreadsheetRow: GoogleSpreadsheetRow[]
+  ) {
+    return googleSpreadsheetRow.map((row) => ({
+      ...(row.toObject() as RowFileType),
+    }));
   }
 }
 

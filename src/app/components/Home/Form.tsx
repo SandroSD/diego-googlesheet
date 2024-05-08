@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useContext, useRef, useState } from "react";
+import { ChangeEvent, useContext, useState, Fragment } from "react";
 import CustomButton from "../CustomButton";
 import CustomSelect from "../CustomSelect";
 import { useRouter } from "next/navigation";
@@ -36,7 +36,7 @@ const Form = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 p-5">
+    <Fragment>
       <div className="w-1/4">
         <CustomSelect
           name="empleado"
@@ -57,9 +57,10 @@ const Form = ({
         <CustomButton
           onClick={handleOnClick}
           isDisabled={!formData.empleado || !formData.mes}
+          label="Continuar"
         />
       </div>
-    </div>
+    </Fragment>
   );
 };
 

@@ -9,5 +9,9 @@ export default async function Home() {
 
   if (!data) return "Loading...";
 
-  return <Form empleados={data.empleados} meses={data.meses} />;
+  return (
+    <div className="flex flex-col bg-blue-300 items-center justify-center gap-5 p-5 h-full">
+      <Form empleados={data.empleados} meses={data.meses} />
+    </div>
+  );
 }

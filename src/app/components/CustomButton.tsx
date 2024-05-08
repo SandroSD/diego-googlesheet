@@ -3,9 +3,11 @@ import { Button } from "@nextui-org/react";
 const CustomButton = ({
   onClick,
   isDisabled = false,
+  label,
 }: {
   onClick: () => void;
   isDisabled: boolean;
+  label: string;
 }) => {
   return (
     <Button
@@ -15,7 +17,7 @@ const CustomButton = ({
       onClick={onClick}
       isDisabled={isDisabled}
     >
-      Continuar
+      {label}
     </Button>
   );
 };

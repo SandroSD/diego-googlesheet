@@ -8,7 +8,7 @@ export type AppContextType = {
 };
 
 export type RowFileType = {
-  "Marca tempora": string;
+  Timestamp: string;
   FECHA: string;
   "NOMBRE TRABAJADOR": string;
   "HORA ENTRADA": string;

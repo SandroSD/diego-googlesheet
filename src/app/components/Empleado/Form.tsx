@@ -8,12 +8,42 @@ import {
   TableHeader,
   TableRow,
   TableCell,
-  getKeyValue,
+  Pagination,
 } from "@nextui-org/react";
+import { useMemo, useState } from "react";
 
 const Form = ({ quincena }: { quincena: RowTableType[] }) => {
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 5;
+
+  const pages = Math.ceil(quincena.length / rowsPerPage);
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return quincena.slice(start, end);
+  }, [page, quincena]);
+
   return (
-    <Table isStriped isCompact>
+    <Table
+      isCompact
+      color="default"
+      selectionMode="single"
+      bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="secondary"
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      }
+    >
       <TableHeader className="flex flex-col">
         <TableColumn key="fecha">Fecha</TableColumn>
         <TableColumn key="empleado">Empleado</TableColumn>
@@ -60,8 +90,19 @@ const Form = ({ quincena }: { quincena: RowTableType[] }) => {
         </TableColumn>
       </TableHeader>
       <TableBody emptyContent={"No hay información disponible."}>
-        {quincena.map((row, index) => (
-          <TableRow key={index}>
+        {items.map((row, index) => (
+          <TableRow
+            key={index}
+            className={
+              row.horaEntradaEmpleador !== row.horaEntradaSupervisor ||
+              row.horaSalidaEmpleador !== row.horaSalidaSupervisor ||
+              row.tiempoAlmuerzoEmpleador !== row.tiempoAlmuerzoSupervisor ||
+              row.recesoManianaEmpleador !== row.recesoManianaSupervisor ||
+              row.recesoTardeEmpleador !== row.recesoTardeSupervisor
+                ? "text-red-500 font-extrabold"
+                : "text-gray-500"
+            }
+          >
             <TableCell>{row.fecha}</TableCell>
             <TableCell>{row.empleado}</TableCell>
             <TableCell className="">
