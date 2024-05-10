@@ -36,31 +36,26 @@ const Form = ({
   };
 
   return (
-    <Fragment>
-      <div className="w-1/4">
-        <CustomSelect
-          name="empleado"
-          label="Empleados"
-          items={empleados}
-          onChange={selectOnChange}
-        />
-      </div>
-      <div className="w-1/4">
-        <CustomSelect
-          name="mes"
-          label="Meses"
-          items={meses}
-          onChange={selectOnChange}
-        />
-      </div>
-      <div className="w-1/6">
-        <CustomButton
-          onClick={handleOnClick}
-          isDisabled={!formData.empleado || !formData.mes}
-          label="Continuar"
-        />
-      </div>
-    </Fragment>
+    <div className="w-1/2 space-y-5">
+      <CustomSelect
+        name="empleado"
+        label="Empleados"
+        items={empleados}
+        onChange={selectOnChange}
+      />
+      <CustomSelect
+        name="mes"
+        label="Meses"
+        items={meses}
+        onChange={selectOnChange}
+      />
+      <CustomButton
+        onClick={handleOnClick}
+        isDisabled={!formData.empleado || !formData.mes}
+        label="Continuar"
+        customStyle="bg-[#D70101] font-bold text-lg"
+      />
+    </div>
   );
 };
 

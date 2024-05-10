@@ -11,7 +11,7 @@ export default async function Home() {
   if (!data) return "Loading...";
 
   return (
-    <div className="flex flex-col bg-blue-300 items-center justify-center gap-5 p-5 h-full">
+    <div className="flex-1 flex flex-col items-center justify-center gap-5 p-5">
       <Form empleados={data.empleados} meses={data.meses} />
     </div>
   );

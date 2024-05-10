@@ -25,17 +25,35 @@ const Form = ({ quincena }: { quincena: RowTableType[] }) => {
     return quincena.slice(start, end);
   }, [page, quincena]);
 
+  const classNamesTable = useMemo(
+    () => ({
+      wrapper: "border-2 border-gray-500 bg-gray-200",
+      table: "",
+      th: "bg-[#0B274D] text-gray-100 text-sm",
+    }),
+    []
+  );
+
+  const classNamesPagination = useMemo(
+    () => ({
+      //wrapper: "border-2 border-gray-500 bg-gray-200",
+      cursor: "bg-[#D70101] font-bold text-base",
+    }),
+    []
+  );
+
   return (
     <Table
       isCompact
-      color="default"
       selectionMode="single"
+      classNames={classNamesTable}
       bottomContent={
         <div className="flex w-full justify-center">
           <Pagination
             isCompact
             showControls
             showShadow
+            classNames={classNamesPagination}
             color="secondary"
             page={page}
             total={pages}
@@ -99,8 +117,8 @@ const Form = ({ quincena }: { quincena: RowTableType[] }) => {
               row.tiempoAlmuerzoEmpleador !== row.tiempoAlmuerzoSupervisor ||
               row.recesoManianaEmpleador !== row.recesoManianaSupervisor ||
               row.recesoTardeEmpleador !== row.recesoTardeSupervisor
-                ? "text-red-500 font-extrabold"
-                : "text-gray-500"
+                ? "text-red-500"
+                : ""
             }
           >
             <TableCell>{row.fecha}</TableCell>

@@ -17,10 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="h-screen bg-gray-400">
+      <body>
         <Providers>
-          <Header />
-          {children}
+          <div className="flex flex-col h-screen">
+            <Header />
+            {children}
+          </div>
         </Providers>
       </body>
     </html>
