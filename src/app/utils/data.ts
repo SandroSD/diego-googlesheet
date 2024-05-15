@@ -102,6 +102,66 @@ class GoogleSheetClass {
     }
   }
 
+  async updateSupervisorRow(
+    data: {
+      mes: string;
+      fecha: string;
+      horaEntrada: string;
+      horaSalida: string;
+      recesoManiana: string;
+      recesoTarde: string;
+      tiempoAlmuerzo: string;
+    },
+    mes: string,
+    folderId = config.googleSpreadSheet.folderProjectId
+  ) {
+    try {
+      const drive = google.drive({ version: "v3", auth: this.token });
+
+      const query = {
+        q: `'${folderId}' in parents`,
+        fields: "files(id,name)",
+      };
+
+      const response = await drive.files.list(query);
+
+      const fileSupervisor = response.data.files?.filter((file) =>
+        file.name?.includes(`SUPERVISOR_${mes}`)
+      )[0];
+
+      if (fileSupervisor === undefined) return null;
+
+      const documentSupervisor = await this.getInfoFromFileById(
+        fileSupervisor.id as string
+      );
+
+      const supervisorSheet = documentSupervisor.sheetsByIndex[0];
+      const supervisorInfo = await supervisorSheet.getRows<RowFileType>();
+
+      const indexRowToUpdate = supervisorInfo.findIndex(
+        (row) => row.get("FECHA") === data.fecha
+      );
+
+      console.log("INDEX, ROW TO UPDATE: ", indexRowToUpdate);
+
+      const rowToUpdate = supervisorInfo[indexRowToUpdate];
+
+      rowToUpdate.set("HORA ENTRADA", data.horaEntrada);
+      rowToUpdate.set("HORA SALIDA", data.horaSalida);
+      rowToUpdate.set("TIEMPO RECESO EN MAÑANA", data.recesoManiana);
+      rowToUpdate.set("TIEMPO RECESO EN TARDE", data.recesoTarde);
+      rowToUpdate.set("TIEMPO DE ALMUERZO", data.tiempoAlmuerzo);
+
+      await rowToUpdate.save();
+
+      console.log("SE GRABO ???");
+      return true;
+    } catch (error) {
+      console.log("ERROR TRYING TO UPDATE: ", error);
+      return false;
+    }
+  }
+
   private prepareRowsInSelect(name: string, rows: GoogleSpreadsheetRow[]) {
     return rows.map((row) => {
       const data = row.get(name);
