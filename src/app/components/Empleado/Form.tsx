@@ -22,9 +22,11 @@ import {
 import { RowTableType } from "@/app/@types/types";
 import PencilIcon from "@/app/icons/pencil";
 import { handleSubmitForm } from "@/app/actions";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
+import { useRouter } from "next/navigation";
 
 const Form = ({ quincena, mes }: { quincena: RowTableType[]; mes: string }) => {
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [submitIsClicked, setSubmitIsClicked] = useState<boolean>(false);
 
@@ -105,9 +107,12 @@ const Form = ({ quincena, mes }: { quincena: RowTableType[]; mes: string }) => {
       setTimeout(() => {
         setSubmitIsClicked((prevState) => !prevState);
         onClose();
+        state.message = "";
+        state.success = false;
+        router.refresh();
       }, 1500);
     }
-  }, [state, submitIsClicked, onClose]);
+  }, [state, submitIsClicked, onClose, router]);
 
   return (
     <>
